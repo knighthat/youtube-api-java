@@ -5,4 +5,5 @@ public enum Status {
     OK,
     LOGIN_REQUIRED,
     ERROR,
+    UNPLAYABLE
 }
