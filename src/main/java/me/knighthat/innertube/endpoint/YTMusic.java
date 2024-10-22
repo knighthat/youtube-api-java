@@ -9,13 +9,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 
 public class YTMusic {
 
 // START: Static fields/functions
+
+    @NotNull
+    private static final Map<String, String> DEFAULT_HEADERS = new TreeMap<>( String.CASE_INSENSITIVE_ORDER );
 
     @NotNull
     private static final Gson      GSON            = new Gson();
@@ -28,14 +31,22 @@ public class YTMusic {
     @NotNull
     public static        String    HOST            = "music.youtube.com";
 
+    static {
+        DEFAULT_HEADERS.put( "Host", YTMusic.HOST );
+        DEFAULT_HEADERS.put( "Content-Type", Constants.CONTENT_TYPE );
+        DEFAULT_HEADERS.put( "User-Agent", Constants.USER_AGENT );
+        DEFAULT_HEADERS.put( "Accept", "*/*" );
+        DEFAULT_HEADERS.put( "Origin", YTMusic.BASE_URL );
+        DEFAULT_HEADERS.put( "Accept-Encoding", String.join( ", ", Constants.SUPPORTED_ENCODINGS ) );
+        DEFAULT_HEADERS.put( "Accept-Language", String.join( ", ", Constants.SUPPORTED_LANGUAGES ) );
+    }
+
 // END: Static fields/functions
 
     @NotNull
     private final OkHttpClient client;
 
-    public YTMusic() {
-        this.client = new OkHttpClient();
-    }
+    public YTMusic() { this.client = new OkHttpClient(); }
 
     private @Nullable String sendRequest(
             @NotNull String endpoint,
@@ -63,20 +74,11 @@ public class YTMusic {
         return null;
     }
 
-    public @NotNull Optional<SongResponse> getSong( @NotNull String videoId ) {
-        Map<String, String> headers = new HashMap<>();
-        headers.put( "Host", YTMusic.HOST );
-        headers.put( "Content-Type", Constants.CONTENT_TYPE );
-        headers.put( "User-Agent", Constants.USER_AGENT );
-        headers.put( "Accept", "*/*" );
-        headers.put( "Origin", YTMusic.BASE_URL );
-        headers.put( "Accept-Encoding", String.join( ", ", Constants.SUPPORTED_ENCODINGS ) );
-        headers.put( "Accept-Language", String.join( ", ", Constants.SUPPORTED_LANGUAGES ) );
-
+    public @NotNull Optional<me.knighthat.innertube.response.Response> getSong( @NotNull String videoId ) {
         PlayerRequestBody playerRequestBody = new PlayerRequestBody( videoId );
         RequestBody body = RequestBody.create( playerRequestBody.toJson(), JSON );
 
-        String responseStr = sendRequest( PLAYER_ENDPOINT, headers, body );
+        String responseStr = sendRequest( PLAYER_ENDPOINT, DEFAULT_HEADERS, body );
         if ( responseStr == null )
             return Optional.empty();
 

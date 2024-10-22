@@ -3,13 +3,17 @@ package me.knighthat.innertube.response;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.Serializable;
-
 @Data
-public class SongResponse implements Serializable {
+public class SongResponse implements GoodResponse {
 
     @NotNull
-    private PlayabilityStatus playabilityStatus;
+    private final ResponseContext   responseContext;
     @NotNull
-    private VideoDetails      videoDetails;
+    private final PlayabilityStatus playabilityStatus;
+    @NotNull
+    private final StreamingData     streamingData;
+    @NotNull
+    private final VideoDetails      videoDetails;
+    @NotNull
+    private final PlayerConfig      playerConfig;
 }
