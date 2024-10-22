@@ -4,14 +4,11 @@ import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.Serializable;
-
 @Data
-public class PlayabilityStatus implements Serializable {
+public class PlayabilityStatus {
 
     @NotNull
-    private Status  status;
+    private Status status;
     @Nullable
-    private String  reason;
-    private boolean playableInEmbed;
+    private String reason;
 }
