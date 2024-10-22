@@ -1,19 +1,42 @@
 package me.knighthat.innertube.response;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.Serializable;
+import java.util.List;
 
 @Data
-public class VideoDetails implements Serializable {
+public class VideoDetails {
 
     @NotNull
-    private String videoId;
+    private final String     videoId;
     @NotNull
-    private String title;
+    private final String     title;
     @NotNull
-    private String lengthSeconds;
+    private final String     lengthSeconds;
     @NotNull
-    private String channelId;
+    private final String     channelId;
+    @NotNull
+    @Getter(AccessLevel.NONE)
+    private final Thumbnails thumbnail;
+
+    public @NotNull List<Thumbnail> getThumbnails() { return thumbnail.thumbnails; }
+
+    @AllArgsConstructor
+    public static class Thumbnails {
+
+        @NotNull
+        private final List<Thumbnail> thumbnails;
+    }
+
+    @Data
+    public static class Thumbnail {
+        @NotNull
+        private final String url;
+        private final short  width;
+        private final short  height;
+    }
 }
