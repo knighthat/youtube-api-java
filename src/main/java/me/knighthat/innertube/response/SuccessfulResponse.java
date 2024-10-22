@@ -2,7 +2,7 @@ package me.knighthat.innertube.response;
 
 import org.jetbrains.annotations.NotNull;
 
-public interface GoodResponse extends Response {
+public interface SuccessfulResponse extends Response {
 
     @NotNull ResponseContext getResponseContext();
 
